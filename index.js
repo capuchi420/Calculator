@@ -1,4 +1,5 @@
 var result = undefined;
+var pastOption = '';
 
 var input = document.querySelector('input');
 
@@ -14,18 +15,41 @@ btns.forEach(btn => {
             case '/':
                 result = (result === undefined ? +input.value : result / (+input.value));
                 input.value = "";
+                pastOption = '/';
                 break;
             case 'x':
                 result = (result === undefined ? +input.value : result * (+input.value));
                 input.value = "";
+                pastOption = 'x';
                 break;
             case '-':
                 result = (result === undefined ? +input.value : result - (+input.value));
                 input.value = "";
+                pastOption = '-';
                 break;
             case '+':
                 result = (result === undefined ? +input.value : result + (+input.value));
                 input.value = "";
+                pastOption = '+';
+                break;
+            case '=':
+                switch(pastOption){
+                    case '/':
+                        result /= +input.value;
+                        break;
+                    case 'x':
+                        result *= +input.value;
+                        break;
+                    case '-':
+                        result -= +input.value;
+                        break;
+                    case '+':
+                        result += +input.value;
+                        break;
+                }
+                input.value = result;
+                pastOption = '';
+                result = undefined;
                 break;
             case 'C':
                 input.value = "";
@@ -33,8 +57,10 @@ btns.forEach(btn => {
             case 'AC':
                 result = undefined;
                 input.value = "";
+                pastOption = '';
                 break;
+            default:
+                input.value += e.target.innerText;
         }
-        console.log(e.target.innerText)
     })
 })
